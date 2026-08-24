@@ -19,13 +19,12 @@ resource "aws_security_group" "web" {
 
   # Ingress restrito
   ingress {
-    description = "HTTP from anywhere"
+    description = "Allow HTTP inbound traffic from anywhere"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    # Nota: Em um ambiente real, o Checkov pode reclamar de "0.0.0.0/0". 
-    # Deixaremos assim intencionalmente para testar o pipeline depois!
+    # checkov:skip=CKV_AWS_260: "Public web server requires port 80 open to the internet"
   }
 
   egress {
