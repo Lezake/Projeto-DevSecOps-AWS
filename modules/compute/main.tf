@@ -19,12 +19,11 @@ resource "aws_security_group" "web" {
 
   # Ingress restrito
   ingress {
-    description = "Allow HTTP inbound traffic from anywhere"
+    description = "SSH aberto para o mundo (Vulnerabilidade)"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    # checkov:skip=CKV_AWS_260: "Public web server requires port 80 open to the internet"
   }
 
   egress {
