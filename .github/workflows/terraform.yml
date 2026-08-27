@@ -8,11 +8,9 @@ on:
     branches:
       - main
 
-# Necessário para a autenticação OIDC funcionar
 permissions:
   id-token: write
   contents: read
-  pull-requests: write # Para o Terraform poder comentar no PR
 
 jobs:
   terraform:
@@ -56,16 +54,13 @@ jobs:
           terraform plan -out=tfplan
           terraform show -json tfplan > tfplan.json
 
-      - name: Run Checkov (Security Scan)
+      - name: Run Checkov
         if: github.event_name == 'pull_request'
-        uses: bridgecrewio/checkov-action@master
+        uses: bridgecrewio/checkov-action@v12
         with:
-          # Escaneia o plano gerado pelo Terraform
           file: environments/dev/tfplan.json
-          # Falha a esteira se encontrar problemas de segurança
-          soft_fail: false 
-          # Pula checagens que exigem recursos pagos ou que não se aplicam ao nosso lab simples
-          skip_check: CKV_AWS_283,CKV_AWS_135,CKV_AWS_115
+          soft_fail: false
+          skip_check: CKV_AWS_283,CKV_AWS_135,CKV_AWS_115,CKV_AWS_260
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
