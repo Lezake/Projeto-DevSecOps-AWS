@@ -12,6 +12,7 @@ variable "subnet_cidr" {
 
 # --- VPC ---
 resource "aws_vpc" "main" {
+  # checkov:skip=CKV2_AWS_11: "VPC flow logs disabled to keep architecture strictly within Free Tier limits"
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -21,11 +22,18 @@ resource "aws_vpc" "main" {
   }
 }
 
+# --- Default Security Group Restrictive (Checkov CKV2_AWS_12) ---
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+}
+
 # --- Subnet ---
 resource "aws_subnet" "public" {
+  # checkov:skip=CKV_AWS_130: "Public IP required since Free Tier architecture does not utilize a NAT Gateway"
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.subnet_cidr
   map_public_ip_on_launch = true # Necessário para instâncias em subnet pública
+  availability_zone       = "us-east-1a" # Forçado para evitar o erro de capacidade na zona 1e
 
   tags = {
     Name = "devsecops-public-subnet"
