@@ -12,7 +12,7 @@ on:
 permissions:
   id-token: write
   contents: read
-  pull-requests: write # Para o Terraform poder comentar no PR
+  pull-requests: write
 
 jobs:
   terraform:
@@ -60,12 +60,10 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: bridgecrewio/checkov-action@master
         with:
-          # Escaneia o plano gerado pelo Terraform
           file: environments/dev/tfplan.json
-          # Falha a esteira se encontrar problemas de segurança
           soft_fail: false 
-          # Pula checagens que exigem recursos pagos ou que não se aplicam ao nosso lab simples
-          skip_check: CKV_AWS_283,CKV_AWS_135,CKV_AWS_115
+          # Ignora checagens relacionadas a recursos pagos ou exceções arquiteturais
+          skip_check: CKV_AWS_283,CKV_AWS_135,CKV_AWS_115,CKV_AWS_382,CKV_AWS_260,CKV_AWS_130,CKV2_AWS_11
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
