@@ -28,6 +28,7 @@ resource "aws_security_group" "web" {
   }
 
   egress {
+    # checkov:skip=CKV_AWS_382: "Outbound access required for package updates and apache installation"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -53,6 +54,13 @@ resource "aws_launch_template" "web" {
   instance_type = var.instance_type
 
   vpc_security_group_ids = [aws_security_group.web.id]
+
+  # Exigir IMDSv2 para mitigar riscos de SSRF (Checkov CKV_AWS_79)
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
 
   # User data simples para rodar um Apache e mostrar que está vivo
   user_data = filebase64("${path.module}/user_data.sh")
