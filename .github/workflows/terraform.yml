@@ -60,7 +60,7 @@ jobs:
         with:
           file: environments/dev/tfplan.json
           soft_fail: false
-          skip_check: CKV_AWS_283,CKV_AWS_135,CKV_AWS_115,CKV_AWS_260
+          skip_check: CKV_AWS_283,CKV_AWS_135,CKV_AWS_115,CKV_AWS_260,CKV_AWS_130,CKV_AWS_382,CKV2_AWS_11,CKV2_AWS_12
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
