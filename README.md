@@ -25,7 +25,7 @@ O fluxo de CI/CD foi estruturado no GitHub Actions com autenticação federada v
 ## Evidências de Execução
 
 ### 1. Bloqueio Preventivo com Checkov (Shift-Left)
-Validação de segurança bloqueando um PR após detectar uma regra de Security Group exposta indevidamente:
+Validação de segurança bloqueando um PR após detectar porta SSH exposta no Security Group e ausência de IMDSv2 no Launch Template:
 
 <p align="center">
   <img src="./docs/checkov-block.png" alt="Bloqueio Preventivo - Checkov" width="800">
