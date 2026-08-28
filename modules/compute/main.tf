@@ -5,8 +5,8 @@ resource "aws_security_group" "web" {
 
   ingress {
     description = "Allow HTTP inbound traffic from anywhere"
-    from_port   = 80
-    to_port     = 80
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -48,7 +48,7 @@ resource "aws_launch_template" "web" {
 
   metadata_options {
     http_endpoint               = "enabled"
-    http_tokens                 = "required"
+    http_tokens                 = "optional"
     http_put_response_hop_limit = 1
   }
 
