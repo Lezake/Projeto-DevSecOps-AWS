@@ -28,7 +28,7 @@ O fluxo de CI/CD foi estruturado no GitHub Actions com autenticação federada v
 Validação de segurança bloqueando um PR após detectar uma regra de Security Group exposta indevidamente:
 
 <p align="center">
-  <img src="./docs/checkov-block.png" alt="Bloqueio Preventivo - Checkov" width="900">
+  <img src="./docs/checkov-block.png" alt="Bloqueio Preventivo - Checkov" width="800">
 </p>
 
 ### 2. Execução da Pipeline de Deploy
