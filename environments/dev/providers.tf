@@ -1,14 +1,11 @@
 terraform {
   required_version = ">= 1.10.0"
 
-  # AQUI ESTÁ O NOVO BLOCO
   backend "s3" {
-    bucket         = "lezake-tfstate-devsecops-908027385183"
-    key            = "dev/terraform.tfstate"
-    region         = "us-east-1"
-    use_path_style = true # Recomendação atual para S3
-    # NOTA CORPORATIVA: Não usamos 'dynamodb_table' aqui pois o Terraform 1.10+
-    # gerencia o locking nativamente no S3 usando APIs de condicional PUT.
+    bucket       = "lezake-tfstate-devsecops-908027385183"
+    key          = "dev/terraform.tfstate"
+    region       = "us-east-1"
+    use_lockfile = true
   }
 
   required_providers {
@@ -26,7 +23,7 @@ provider "aws" {
     tags = {
       Environment = "dev"
       ManagedBy   = "Terraform"
-      Project     = "iac-pipeline-portfolio"
+      Project     = "devsecops-aws-pipeline"
     }
   }
 }
